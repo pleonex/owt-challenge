@@ -1,6 +1,10 @@
+﻿using Contactor.Backend;
+using Contactor.Backend.Contacts;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddSingleton<IRepository<ContactDto>, ContactsRepository>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -4,39 +4,42 @@ using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ContactsController(IRepository<Contact> contactsRepo) : ControllerBase
+public class ContactsController(IRepository<ContactDto> contactsRepo) : ControllerBase
 {
     // GET: api/<ContactsController>
     [HttpGet]
-    public IEnumerable<Contact> Get()
+    public IEnumerable<ContactDto> Get()
     {
         return contactsRepo.ReadAll();
     }
 
     // GET api/<ContactsController>/5
     [HttpGet("{id}")]
-    public Contact Get(string id)
+    public IActionResult Get(Guid id)
     {
-        return contactsRepo.Read(id);
+        ContactDto? contact = contactsRepo.Read(id);
+        return contact is null ? NotFound() : Ok(contact);
     }
 
     // POST api/<ContactsController>
     [HttpPost]
-    public void Post([FromBody] Contact value)
+    public void Post([FromBody] ContactDto value)
     {
-        contactsRepo.Create(value);
+        if (ModelState.IsValid) {
+            contactsRepo.Create(value);
+        }
     }
 
     // PUT api/<ContactsController>/5
     [HttpPut("{id}")]
-    public void Put(string id, [FromBody] Contact value)
+    public void Put(Guid id, [FromBody] ContactDto value)
     {
         contactsRepo.Update(id, value);
     }
 
     // DELETE api/<ContactsController>/5
     [HttpDelete("{id}")]
-    public void Delete(string id)
+    public void Delete(Guid id)
     {
         contactsRepo.Remove(id);
     }

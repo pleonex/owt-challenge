@@ -2,52 +2,80 @@
 
 using System.Collections.Generic;
 
-public class ContactsRepository : IRepository<Contact>
+public class ContactsRepository : IRepository<ContactDto>
 {
     private readonly List<Contact> contacts = new();
 
-    public void Create(Contact model)
+    public bool Create(ContactDto dto)
     {
-        if (contacts.Contains(model)) {
-            throw new Exception("Already here");
-        }
+        ArgumentNullException.ThrowIfNull(dto);
 
-        contacts.Add(model);
+        var newContact = ToModel(dto);
+        newContact.Id = Guid.NewGuid(); // will be assigned by DB later.
+
+        contacts.Add(newContact);
+        return true;
     }
 
-    public Contact Read(string id)
+    public ContactDto? Read(Guid id)
     {
         Contact? contact = contacts.Find(c => c.Id == id);
-        if (contact is null) {
-            throw new Exception("not found");
-        }
 
-        return contact;
+        return contact is null ? null : ToDto(contact);
     }
 
-    public IEnumerable<Contact> ReadAll()
+    public IEnumerable<ContactDto> ReadAll()
     {
-        return contacts;
+        return contacts.Select(ToDto);
     }
 
-    public void Remove(string id)
+    public bool Remove(Guid id)
     {
         int index = contacts.FindIndex(c => c.Id == id);
         if (index == -1) {
-            throw new Exception("not found");
+            return false;
         }
 
         contacts.RemoveAt(index);
+        return true;
     }
 
-    public void Update(string id, Contact model)
+    public bool Update(Guid id, ContactDto dto)
     {
         int index = contacts.FindIndex(c => c.Id == id);
         if (index == -1) {
-            throw new Exception("not found");
+            return false;
         }
 
-        // TODO: copy ID
-        contacts[index] = model;
+        var model = contacts[index];
+        model.FirstName = dto.FirstName;
+        model.LastName = dto.LastName;
+        model.Address = dto.Address;
+        model.Email = dto.Email;
+        model.MobilePhone = dto.MobilePhone;
+        return true;
+    }
+
+    private static Contact ToModel(ContactDto dto)
+    {
+        // FUTURE: Use AutoMapper
+        return new Contact {
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Address = dto.Address,
+            Email = dto.Email,
+            MobilePhone = dto.MobilePhone,
+        };
+    }
+
+    private static ContactDto ToDto(Contact model)
+    {
+        return new ContactDto {
+            FirstName = model.FirstName,
+            LastName = model.LastName,
+            Address = model.Address,
+            Email = model.Email,
+            MobilePhone = model.MobilePhone,
+        };
     }
 }
