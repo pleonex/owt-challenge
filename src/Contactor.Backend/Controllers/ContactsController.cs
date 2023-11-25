@@ -1,23 +1,24 @@
-﻿namespace Contactor.Backend.Contacts;
+﻿namespace Contactor.Backend.Controllers;
 
+using Contactor.Backend.Models;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ContactsController(IRepository<ContactDto> contactsRepo) : ControllerBase
+public class ContactsController(IContactsRepository contactsRepo) : ControllerBase
 {
     // GET: api/<ContactsController>
     [HttpGet]
-    public IEnumerable<ContactDto> Get()
+    public async Task<IEnumerable<ContactDto>> Get()
     {
-        return contactsRepo.ReadAll();
+        return await contactsRepo.GetAll();
     }
 
     // GET api/<ContactsController>/5
     [HttpGet("{id}")]
     public async Task<ActionResult<ContactDto>> Get(int id)
     {
-        ContactDto? contact = await contactsRepo.Read(id);
+        ContactDto? contact = await contactsRepo.GetById(id);
         return contact is null ? NotFound() : contact;
     }
 
@@ -47,7 +48,7 @@ public class ContactsController(IRepository<ContactDto> contactsRepo) : Controll
             return BadRequest();
         }
 
-        bool result = await contactsRepo.Update(id, value);
+        bool result = await contactsRepo.UpdateById(value);
         if (!result) {
             return BadRequest();
         }
@@ -62,7 +63,7 @@ public class ContactsController(IRepository<ContactDto> contactsRepo) : Controll
     [ProducesDefaultResponseType]
     public async Task<IActionResult> Delete(int id)
     {
-        bool result = await contactsRepo.Remove(id);
+        bool result = await contactsRepo.RemoveById(id);
         if (!result) {
             return NotFound();
         }

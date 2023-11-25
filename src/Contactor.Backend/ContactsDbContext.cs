@@ -1,6 +1,6 @@
 ﻿namespace Contactor.Backend;
 
-using Contactor.Backend.Contacts;
+using Contactor.Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class ContactsDbContext : DbContext

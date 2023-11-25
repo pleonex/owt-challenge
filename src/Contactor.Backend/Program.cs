@@ -1,17 +1,22 @@
 ﻿using Contactor.Backend;
-using Contactor.Backend.Contacts;
+using Contactor.Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddDbContext<ContactsDbContext>(opts =>
-    opts.UseInMemoryDatabase(builder.Configuration.GetConnectionString("ContactsDatabase")!));
+builder.Services.AddDbContext<ContactsDbContext>(opts => {
+    string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
+    if (string.IsNullOrEmpty(connectionString)) {
+        throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
+    }
 
-builder.Services.AddScoped<IRepository<ContactDto>, ContactsRepository>();
+    opts.UseInMemoryDatabase(connectionString);
+ });
+
+builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

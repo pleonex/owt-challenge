@@ -1,9 +1,9 @@
-﻿namespace Contactor.Backend.Contacts;
+﻿namespace Contactor.Backend.Models;
 
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-public class ContactsRepository(ContactsDbContext dbContext) : IRepository<ContactDto>
+public class ContactsRepository(ContactsDbContext dbContext) : IContactsRepository
 {
     public async Task<int> Create(ContactDto dto)
     {
@@ -16,7 +16,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IRepository<Conta
         return newContact.Id;
     }
 
-    public async Task<ContactDto?> Read(int id)
+    public async Task<ContactDto?> GetById(int id)
     {
         Contact? contact = await dbContext.Contacts
             .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
@@ -24,13 +24,13 @@ public class ContactsRepository(ContactsDbContext dbContext) : IRepository<Conta
         return contact is null ? null : ToDto(contact);
     }
 
-    public IEnumerable<ContactDto> ReadAll()
+    public async Task<IEnumerable<ContactDto>> GetAll()
     {
-        // FUTURE: Add paging
-        return dbContext.Contacts.Select(ToDto);
+        List<Contact> list = await dbContext.Contacts.ToListAsync();
+        return list.Select(ToDto);
     }
 
-    public async Task<bool> Remove(int id)
+    public async Task<bool> RemoveById(int id)
     {
         Contact? contact = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
         if (contact is null) {
@@ -43,13 +43,9 @@ public class ContactsRepository(ContactsDbContext dbContext) : IRepository<Conta
         return true;
     }
 
-    public async Task<bool> Update(int id, ContactDto dto)
+    public async Task<bool> UpdateById(ContactDto dto)
     {
-        if (id != dto.Id) {
-            return false;
-        }
-
-        Contact? model = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
+        Contact? model = await dbContext.Contacts.FindAsync(dto.Id).ConfigureAwait(false);
         if (model is null) {
             return false;
         }
