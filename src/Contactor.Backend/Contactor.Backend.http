@@ -1,6 +1,6 @@
 @Contactor.Backend_HostAddress = http://localhost:5287
 
-GET {{Contactor.Backend_HostAddress}}/weatherforecast/
+GET {{Contactor.Backend_HostAddress}}/Contacts/
 Accept: application/json
 
 ###
