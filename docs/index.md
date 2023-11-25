@@ -1,17 +1,16 @@
-# .NET project template
+# Contactor: OWT candidate tech challenge
 
-Repository template for .NET projects with a complete DevOps workflow. It uses
-the build system and best-practices from
-[PleOps.Cake](https://www.pleonex.dev/PleOps.Cake/).
-
-- ♻️ DevOps best practices for a software project
-- 🔧 Build, test and release .NET projects
-- 📚 Documentation
-- 🤖 Continuous integration
+A web API to create and update the user's contacts.
 
 ## Tech stack
 
-- **Projects**: C# / .NET
-- **Documentation**: DocFX, GitHub page
+- **Backend**:
+  - ASP.NET Core 8.0
+  - IdentityServer
+  - SQLite
+- **Documentation**: DocFX, Swagger, GitHub page
 - **CI**: GitHub Actions
-- **Release deployment**: NuGet feeds, GitHub
+- **DevOps workflow**:
+  - [Cake](https://cakebuild.net/)
+  - [PleOps Cake](https://www.pleonex.dev/PleOps.Cake/)
+- **Release deployment**: GitHub, Docker
