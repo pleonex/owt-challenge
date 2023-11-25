@@ -2,26 +2,26 @@
 
 using System.ComponentModel.DataAnnotations;
 
-public class ContactDto
+public record ContactDto
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
 
     [Required]
-    public required string FirstName { get; set; }
+    public required string FirstName { get; init; }
 
     [Required]
-    public required string LastName { get; set; }
+    public required string LastName { get; init; }
 
     public string FullName => $"{LastName}, {FirstName}";
 
     [Required]
-    public required string Address { get; set; }
+    public required string Address { get; init; }
 
     [Required]
     [EmailAddress]
-    public required string Email { get; set; }
+    public required string Email { get; init; }
 
     [Required]
     [Phone]
-    public required string MobilePhone { get; set; }
+    public required string MobilePhone { get; init; }
 }
