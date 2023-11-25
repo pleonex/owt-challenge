@@ -1,8 +1,10 @@
 ﻿namespace Contactor.Backend.Models;
 
-public class Contact
+using System.Collections.ObjectModel;
+
+public record Contact
 {
-    public required int Id { get; set; }
+    public required int Id { get; init; }
 
     public required string FirstName { get; set; }
 
@@ -13,4 +15,6 @@ public class Contact
     public required string Email { get; set; }
 
     public required string MobilePhone { get; set; }
+
+    public ICollection<Skill> Skills { get; set; } = new Collection<Skill>();
 }

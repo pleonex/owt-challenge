@@ -11,4 +11,6 @@ public class ContactsDbContext : DbContext
     }
 
     public DbSet<Contact> Contacts { get; set; }
+
+    public DbSet<Skill> Skills { get; set; }
 }
