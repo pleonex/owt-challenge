@@ -5,11 +5,11 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Run MyConsole",
+            "name": "Run server",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Build",
-            "program": "${workspaceFolder}/src/MyConsole/bin/Debug/net8.0/MyConsole.dll",
+            "program": "${workspaceFolder}/src/Contactor.Server/bin/Debug/net8.0/Contactor.Server.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

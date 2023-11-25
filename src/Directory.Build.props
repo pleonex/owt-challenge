@@ -1,9 +1,8 @@
 <Project>
   <PropertyGroup>
-    <Product>PleOps</Product>
-    <Authors>pleonex</Authors>
-    <Company>None</Company>
-    <Copyright>Copyright (C) 2020 Benito Palacios Sánchez</Copyright>
+    <Product>Contactor</Product>
+    <Authors>Benito Palacios Sanchez</Authors>
+    <Copyright>Copyright (C) 2023 Benito Palacios Sánchez</Copyright>
 
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
 
@@ -14,10 +13,10 @@
 
   <PropertyGroup>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/pleonex/template-csharp</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/pleonex/template-csharp</RepositoryUrl>
+    <PackageProjectUrl>https://www.pleonex.dev/owt-challenge</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/pleonex/owt-challenge</RepositoryUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>net;csharp;devops;pipeline;github-actions</PackageTags>
+    <PackageTags>owt;challenge;web-api;net;aspnetcore</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
