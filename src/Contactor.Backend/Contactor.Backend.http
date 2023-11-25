@@ -1,6 +1,24 @@
 @Contactor.Backend_HostAddress = http://localhost:5287
 
-GET {{Contactor.Backend_HostAddress}}/weatherforecast/
+GET {{Contactor.Backend_HostAddress}}/api/Contacts/
 Accept: application/json
 
 ###
+
+POST {{Contactor.Backend_HostAddress}}/api/Contacts/
+Accept: text/plain
+Content-Type: application/json
+
+{
+    "id": 0,
+    "FirstName": "Benito",
+    "LastName": "Palacios Sanchez",
+    "Address": "Somewhere Lutry",
+    "Email": "benito.palsan@protonmail.com",
+    "MobilePhone": "+4177810102030"
+}
+
+###
+
+GET {{Contactor.Backend_HostAddress}}/api/Contacts/1
+Accept: application/json
