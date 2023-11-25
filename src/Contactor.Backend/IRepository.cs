@@ -2,13 +2,13 @@
 
 public interface IRepository<T>
 {
-    bool Create(T model);
+    Task<int> Create(T model);
 
     IEnumerable<T> ReadAll();
 
-    T? Read(Guid id);
+    Task<T?> Read(int id);
 
-    bool Update(Guid id, T model);
+    Task<bool> Update(int id, T model);
 
-    bool Remove(Guid id);
+    Task<bool> Remove(int id);
 }

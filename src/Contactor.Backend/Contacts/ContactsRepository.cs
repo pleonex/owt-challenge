@@ -1,58 +1,68 @@
 ﻿namespace Contactor.Backend.Contacts;
 
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-public class ContactsRepository : IRepository<ContactDto>
+public class ContactsRepository(ContactsDbContext dbContext) : IRepository<ContactDto>
 {
-    private readonly List<Contact> contacts = new();
-
-    public bool Create(ContactDto dto)
+    public async Task<int> Create(ContactDto dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
-        var newContact = ToModel(dto);
-        newContact.Id = Guid.NewGuid(); // will be assigned by DB later.
+        Contact newContact = ToModel(dto);
+        await dbContext.AddAsync(newContact).ConfigureAwait(false);
+        await dbContext.SaveChangesAsync().ConfigureAwait(false);
 
-        contacts.Add(newContact);
-        return true;
+        return newContact.Id;
     }
 
-    public ContactDto? Read(Guid id)
+    public async Task<ContactDto?> Read(int id)
     {
-        Contact? contact = contacts.Find(c => c.Id == id);
+        Contact? contact = await dbContext.Contacts
+            .FirstOrDefaultAsync(m => m.Id == id).ConfigureAwait(false);
 
         return contact is null ? null : ToDto(contact);
     }
 
     public IEnumerable<ContactDto> ReadAll()
     {
-        return contacts.Select(ToDto);
+        // FUTURE: Add paging
+        return dbContext.Contacts.Select(ToDto);
     }
 
-    public bool Remove(Guid id)
+    public async Task<bool> Remove(int id)
     {
-        int index = contacts.FindIndex(c => c.Id == id);
-        if (index == -1) {
+        Contact? contact = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
+        if (contact is null) {
             return false;
         }
 
-        contacts.RemoveAt(index);
+        dbContext.Contacts.Remove(contact);
+        await dbContext.SaveChangesAsync().ConfigureAwait(false);
+
         return true;
     }
 
-    public bool Update(Guid id, ContactDto dto)
+    public async Task<bool> Update(int id, ContactDto dto)
     {
-        int index = contacts.FindIndex(c => c.Id == id);
-        if (index == -1) {
+        if (id != dto.Id) {
             return false;
         }
 
-        var model = contacts[index];
+        Contact? model = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
+        if (model is null) {
+            return false;
+        }
+
         model.FirstName = dto.FirstName;
         model.LastName = dto.LastName;
         model.Address = dto.Address;
         model.Email = dto.Email;
         model.MobilePhone = dto.MobilePhone;
+
+        dbContext.Contacts.Update(model);
+        await dbContext.SaveChangesAsync().ConfigureAwait(false);
+
         return true;
     }
 
@@ -60,6 +70,7 @@ public class ContactsRepository : IRepository<ContactDto>
     {
         // FUTURE: Use AutoMapper
         return new Contact {
+            Id = dto.Id,
             FirstName = dto.FirstName,
             LastName = dto.LastName,
             Address = dto.Address,
@@ -71,6 +82,7 @@ public class ContactsRepository : IRepository<ContactDto>
     private static ContactDto ToDto(Contact model)
     {
         return new ContactDto {
+            Id = model.Id,
             FirstName = model.FirstName,
             LastName = model.LastName,
             Address = model.Address,
