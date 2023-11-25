@@ -20,7 +20,7 @@ public sealed class BuildLifetime : FrostingLifetime<PleOpsBuildContext>
         context.ReadArguments();
 
         context.DotNetContext.ApplicationProjects.Add(new ProjectPublicationInfo(
-            "./src/Contactor.Server", new[] { "win-x64", "linux-x64" }, "net8.0"));
+            "./src/Contactor.Backend", new[] { "win-x64", "linux-x64" }, "net8.0"));
 
         // Print the build info to use.
         context.Print();

@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../Contactor.Server/Contactor.Server.csproj" />
+    <ProjectReference Include="..\Contactor.Backend\Contactor.Backend.csproj" />
 
     <PackageReference Include="nunit" />
     <PackageReference Include="NUnit3TestAdapter" />
