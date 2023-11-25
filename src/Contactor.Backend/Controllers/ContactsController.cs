@@ -29,12 +29,12 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesDefaultResponseType]
     public async Task<ActionResult<ContactDto>> Post([FromBody] ContactDto value)
     {
-        if (ModelState.IsValid) {
-            int itemId = await contactsRepo.Create(value);
-            return CreatedAtAction(nameof(Get), new { id = itemId }, value);
+        if (!ModelState.IsValid) {
+            return BadRequest();
         }
 
-        return BadRequest();
+        int itemId = await contactsRepo.Create(value);
+        return CreatedAtAction(nameof(Get), new { id = itemId }, value);
     }
 
     // PUT api/<ContactsController>/5

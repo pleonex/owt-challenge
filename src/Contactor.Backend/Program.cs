@@ -20,8 +20,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -30,7 +28,6 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 
     app.UseDeveloperExceptionPage();
-    // app.UseMigrationsEndPoint();
 } 
 
 // Create database if it doesn't exist
