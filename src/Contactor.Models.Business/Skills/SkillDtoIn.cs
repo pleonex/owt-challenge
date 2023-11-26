@@ -1,7 +1,7 @@
-﻿namespace Contactor.Backend.Models.Dto.Skills;
+﻿namespace Contactor.Models.Business.Skills;
 
 using System.ComponentModel.DataAnnotations;
-using Contactor.Backend.Models.Domain;
+using Contactor.Models.Domain;
 
 public record SkillDtoIn
 {

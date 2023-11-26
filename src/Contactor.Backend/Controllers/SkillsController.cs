@@ -1,6 +1,6 @@
 ﻿namespace Contactor.Backend.Controllers;
 
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Skills;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>

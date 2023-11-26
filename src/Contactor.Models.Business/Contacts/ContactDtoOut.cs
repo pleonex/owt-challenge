@@ -1,7 +1,7 @@
-﻿namespace Contactor.Backend.Models.Dto.Contacts;
+﻿namespace Contactor.Models.Business.Contacts;
 
 using System.Collections.ObjectModel;
-using Contactor.Backend.Models.Domain;
+using Contactor.Models.Domain;
 
 /// <summary>
 /// Data transfer object for <see cref="Contact"/> to export / provide all the

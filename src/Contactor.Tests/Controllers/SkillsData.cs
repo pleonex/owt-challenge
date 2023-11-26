@@ -1,6 +1,6 @@
 ﻿namespace Contactor.Tests.Controllers;
 
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Skills;
 
 internal static class SkillsData
 {

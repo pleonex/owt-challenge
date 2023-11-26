@@ -2,9 +2,7 @@
 
 using System.Threading.Tasks;
 using Contactor.Backend.Controllers;
-using Contactor.Backend.Models.Domain;
-using Contactor.Backend.Models.Dto.Skills;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Contactor.Models.Business.Skills;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;

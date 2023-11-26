@@ -1,9 +1,8 @@
 ﻿using System.Reflection;
-using Contactor.Backend.Models.Domain;
-using Contactor.Backend.Models.Dto.Contacts;
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Contacts;
+using Contactor.Models.Business.Skills;
+using Contactor.Models.Domain;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);

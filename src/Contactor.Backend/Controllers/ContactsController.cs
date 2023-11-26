@@ -1,7 +1,7 @@
 ﻿namespace Contactor.Backend.Controllers;
 
-using Contactor.Backend.Models.Dto.Contacts;
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Contacts;
+using Contactor.Models.Business.Skills;
 using Microsoft.AspNetCore.Mvc;
 
 /// <summary>
@@ -78,6 +78,10 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesDefaultResponseType]
     public async Task<IActionResult> Put(int id, [FromBody] ContactDtoIn value)
     {
+        if (!ModelState.IsValid) {
+            return BadRequest();
+        }
+
         bool result = await contactsRepo.UpdateById(id, value);
         if (!result) {
             return NotFound();

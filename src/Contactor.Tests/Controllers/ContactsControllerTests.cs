@@ -2,8 +2,8 @@
 
 using System.Threading.Tasks;
 using Contactor.Backend.Controllers;
-using Contactor.Backend.Models.Dto.Contacts;
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Contacts;
+using Contactor.Models.Business.Skills;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -138,9 +138,13 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
+        repository.Setup(x => x.UpdateById(id, contact))
+            .Verifiable(Times.Never);
+
         controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
         var result = await controller.Put(id, contact).ConfigureAwait(false);
 
+        repository.Verify();
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
 

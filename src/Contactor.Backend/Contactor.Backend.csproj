@@ -19,4 +19,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Contactor.Models.Business\Contactor.Models.Business.csproj" />
+    <ProjectReference Include="..\Contactor.Models.Domain\Contactor.Models.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

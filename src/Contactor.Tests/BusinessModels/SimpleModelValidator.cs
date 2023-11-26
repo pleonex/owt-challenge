@@ -1,4 +1,4 @@
-﻿namespace Contactor.Tests.Dto;
+﻿namespace Contactor.Tests.BusinessModels;
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

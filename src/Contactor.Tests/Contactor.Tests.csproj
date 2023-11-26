@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Contactor.Backend\Contactor.Backend.csproj" />
+    <ProjectReference Include="..\Contactor.Models.Business\Contactor.Models.Business.csproj" />
+    <ProjectReference Include="..\Contactor.Models.Domain\Contactor.Models.Domain.csproj" />
     <PackageReference Include="Moq" />
 
     <PackageReference Include="nunit" />

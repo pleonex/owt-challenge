@@ -1,9 +1,7 @@
-﻿namespace Contactor.Tests.Dto;
+﻿namespace Contactor.Tests.BusinessModels;
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using Contactor.Backend.Models.Dto.Contacts;
+using Contactor.Models.Business.Contacts;
 using NUnit.Framework;
 
 [TestFixture]
