@@ -1,9 +1,8 @@
 - name: Guides
   href: articles/
 
-# TODO #4: To enable once we have docs
-# - name: API
-#  href: api/
+- name: API
+  href: api/
 
 - name: Changelog
   href: articles/changelog.md
