@@ -29,6 +29,7 @@
           "api/index.md"
         ]
       },
+      { "files": "rest/*swagger.json" },
       { "files": "**/*.{md,yml}", "src": "articles", "dest": "docs" },
       { "files": [ "toc.yml", "*.md" ] }
     ],

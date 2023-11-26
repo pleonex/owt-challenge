@@ -4,6 +4,7 @@ using Contactor.Models.Business.Skills;
 using Contactor.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ContactsDbContext>(opts => {
     string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
     if (string.IsNullOrEmpty(connectionString)) {
-        throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
+        if (builder.Environment.IsDevelopment()) {
+            connectionString = string.Empty; // bypass for swagger docs generation
+        } else {
+            throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
+        }
     }
 
     opts.UseInMemoryDatabase(connectionString);
@@ -42,6 +47,12 @@ builder.Services.AddSwaggerGen(opts => {
 
     var xmlDocs = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlDocs));
+
+    // DocFx requires operationIds. They need to be unique across full API.
+    opts.CustomOperationIds(apiDesc => {
+        return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)
+            ? $"{methodInfo.DeclaringType!.Name}_{methodInfo.Name}" : null;
+    });
 });
 
 var app = builder.Build();
@@ -52,7 +63,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 
     app.UseDeveloperExceptionPage();
-} 
+}
 
 // Create database if it doesn't exist
 // TODO: Remove for production and use migrations
