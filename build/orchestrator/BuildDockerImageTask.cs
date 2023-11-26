@@ -28,7 +28,7 @@ public class BuildDockerImageTask : FrostingTask<BuildContext>
         // Export into tar
         context.Log.Information("Exporting image");
         string projectName = Path.GetFileName(context.DockerWebProject);
-        string dockerFilename = $"{projectName}-{context.Version}.tar";
+        string dockerFilename = $"docker_{projectName}-{context.Version}.tar";
         string dockerImageTempPath = Path.Combine(context.TemporaryPath, dockerFilename);
         string dockerArgs = new StringBuilder()
             .Append("save")

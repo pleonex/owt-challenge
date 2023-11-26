@@ -1,0 +1,27 @@
+connect http://localhost:5287
+
+cd api/Contacts
+
+post -h Content-Type:application/json -c "{\"FirstName\":\"Benito\",\"LastName\":\"Palacios Sanchez\",\"Address\":\"Lutry\",\"Email\":\"benito.palsan@protonmail.com\",\"MobilePhone\":\"+4177810102030\"}"
+
+get 1
+
+post 1/skills -h Content-Type:application/json -c "{\"name\":\"csharp\", \"level\":5 }"
+
+get 1
+
+get
+
+cd ../Skills
+get
+
+put 1 -h Content-Type:application/json -c "{\"name\":\"java\", \"level\":3 }"
+
+get 1
+
+delete 1
+
+get
+
+cd ../Contacts
+get 1
