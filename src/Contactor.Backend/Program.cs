@@ -1,7 +1,10 @@
-﻿using Contactor.Backend.Models.Domain;
-using Contactor.Backend.Models.Dto.Contacts;
-using Contactor.Backend.Models.Dto.Skills;
+﻿using System.Reflection;
+using Contactor.Models.Business.Contacts;
+using Contactor.Models.Business.Skills;
+using Contactor.Models.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ContactsDbContext>(opts => {
     string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
     if (string.IsNullOrEmpty(connectionString)) {
-        throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
+        if (builder.Environment.IsDevelopment()) {
+            connectionString = "test"; // bypass for swagger docs generation
+        } else {
+            throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
+        }
     }
 
     opts.UseInMemoryDatabase(connectionString);
@@ -20,7 +27,32 @@ builder.Services.AddScoped<IContactsRepository, ContactsRepository>()
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opts => {
+#pragma warning disable S1075 // URIs should not be hardcoded
+    opts.SwaggerDoc("v1", new OpenApiInfo {
+        Version = "v1",
+        Title = "Contacts API",
+        Description = "Contacts REST API for the OWT tech challenge",
+        TermsOfService = new Uri("https://www.owt.swiss/en/owt-impressum/"),
+        Contact = new OpenApiContact {
+            Name = "Benito Palacios Sanchez",
+            Email = "benito.palsan@protonmail.com",
+        },
+        License = new OpenApiLicense {
+            Name = "OWT license",
+            Url = new Uri("https://www.owt.swiss/en/owt-impressum/"),
+        },
+    });
+#pragma warning restore S1075
+
+    var xmlDocs = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    opts.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlDocs));
+
+    // DocFx requires operationIds. They need to be unique across full API.
+    opts.CustomOperationIds(apiDesc => {
+        return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
+    });
+});
 
 var app = builder.Build();
 
@@ -30,7 +62,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 
     app.UseDeveloperExceptionPage();
-} 
+}
 
 // Create database if it doesn't exist
 // TODO: Remove for production and use migrations

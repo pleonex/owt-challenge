@@ -2,9 +2,7 @@
 
 using System.Threading.Tasks;
 using Contactor.Backend.Controllers;
-using Contactor.Backend.Models.Domain;
-using Contactor.Backend.Models.Dto.Skills;
-using Microsoft.AspNetCore.Http.HttpResults;
+using Contactor.Models.Business.Skills;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -24,7 +22,7 @@ public class SkillsControllerTests
             .ReturnsAsync(expected)
             .Verifiable(Times.Once);
 
-        var result = await controller.Get().ConfigureAwait(false);
+        var result = await controller.GetAllSkills().ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.EquivalentTo(expected));
@@ -41,7 +39,7 @@ public class SkillsControllerTests
             .ReturnsAsync(skill)
             .Verifiable(Times.Once);
 
-        var result = await controller.Get(skill.Id).ConfigureAwait(false);
+        var result = await controller.GetSkillsById(skill.Id).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result.Value, Is.SameAs(skill));
@@ -58,7 +56,7 @@ public class SkillsControllerTests
             .ReturnsAsync((SkillDtoOut)null)
             .Verifiable(Times.Once);
 
-        var result = await controller.Get(skillId).ConfigureAwait(false);
+        var result = await controller.GetSkillsById(skillId).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result.Result, Is.InstanceOf<NotFoundResult>());
@@ -76,7 +74,7 @@ public class SkillsControllerTests
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
-        var result = await controller.Put(skill.Id, skill).ConfigureAwait(false);
+        var result = await controller.UpdateSkillById(skill.Id, skill).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -89,7 +87,7 @@ public class SkillsControllerTests
         var controller = new SkillsController(repository.Object);
 
         controller.ModelState.AddModelError("error", "Some error");
-        var result = await controller.Put(3, SkillsData.InvalidSkill).ConfigureAwait(false);
+        var result = await controller.UpdateSkillById(3, SkillsData.InvalidSkill).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
@@ -105,7 +103,7 @@ public class SkillsControllerTests
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 
-        var result = await controller.Put(skill.Id, skill).ConfigureAwait(false);
+        var result = await controller.UpdateSkillById(skill.Id, skill).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NotFoundResult>());
@@ -122,7 +120,7 @@ public class SkillsControllerTests
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
-        var result = await controller.Delete(skillId).ConfigureAwait(false);
+        var result = await controller.DeleteSkillById(skillId).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -139,7 +137,7 @@ public class SkillsControllerTests
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 
-        var result = await controller.Delete(skillId).ConfigureAwait(false);
+        var result = await controller.DeleteSkillById(skillId).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NotFoundResult>());

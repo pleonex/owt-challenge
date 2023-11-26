@@ -1,8 +1,8 @@
-﻿namespace Contactor.Backend.Models.Dto.Contacts;
+﻿namespace Contactor.Models.Business.Contacts;
 
 using System.Collections.Generic;
-using Contactor.Backend.Models.Domain;
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Skills;
+using Contactor.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 public class ContactsRepository(ContactsDbContext dbContext) : IContactsRepository

@@ -1,4 +1,4 @@
-﻿namespace Contactor.Backend.Models.Domain;
+﻿namespace Contactor.Models.Domain;
 
 using System.Collections.ObjectModel;
 

@@ -1,8 +1,8 @@
-﻿namespace Contactor.Backend.Models.Dto.Skills;
+﻿namespace Contactor.Models.Business.Skills;
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Contactor.Backend.Models.Domain;
+using Contactor.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 public class SkillRepository(ContactsDbContext dbContext) : ISkillRepository

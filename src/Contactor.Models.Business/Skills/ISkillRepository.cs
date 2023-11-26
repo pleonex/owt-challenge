@@ -1,4 +1,4 @@
-﻿namespace Contactor.Backend.Models.Dto.Skills;
+﻿namespace Contactor.Models.Business.Skills;
 public interface ISkillRepository
 {
     Task<IEnumerable<SkillDtoOut>> GetAll();

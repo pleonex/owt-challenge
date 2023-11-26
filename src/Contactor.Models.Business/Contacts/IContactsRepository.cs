@@ -1,6 +1,6 @@
-﻿namespace Contactor.Backend.Models.Dto.Contacts;
+﻿namespace Contactor.Models.Business.Contacts;
 
-using Contactor.Backend.Models.Dto.Skills;
+using Contactor.Models.Business.Skills;
 
 public interface IContactsRepository
 {

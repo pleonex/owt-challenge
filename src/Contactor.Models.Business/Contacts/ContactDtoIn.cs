@@ -1,7 +1,7 @@
-﻿namespace Contactor.Backend.Models.Dto.Contacts;
+﻿namespace Contactor.Models.Business.Contacts;
 
 using System.ComponentModel.DataAnnotations;
-using Contactor.Backend.Models.Domain;
+using Contactor.Models.Domain;
 
 /// <summary>
 /// Data transfer object to receive <see cref="Contact"/> info from APIs with
