@@ -19,7 +19,7 @@ builder.Services.AddDbContext<ContactsDbContext>(opts => {
         }
     }
 
-    opts.UseInMemoryDatabase(connectionString);
+    opts.UseSqlite(connectionString);
  });
 
 builder.Services.AddScoped<IContactsRepository, ContactsRepository>()
@@ -65,11 +65,11 @@ if (app.Environment.IsDevelopment()) {
 }
 
 // Create database if it doesn't exist
-// TODO: Remove for production and use migrations
+// TODO: For production use migration tools
 using (var scope = app.Services.CreateScope()) {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ContactsDbContext>();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 app.UseAuthorization();

@@ -9,3 +9,6 @@ build/temp/
 # IDEs
 .vs/
 *.csproj.user
+
+# Tests
+contacts.db*
