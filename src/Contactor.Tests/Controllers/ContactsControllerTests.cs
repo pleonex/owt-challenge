@@ -145,7 +145,7 @@ public class ContactsControllerTests
     }
 
     [Test]
-    public async Task PutFailedToUpdateReturnsBadRequest()
+    public async Task PutFailedToUpdateReturnsNotFound()
     {
         int id = 1;
         ContactDtoIn contact = ContactsData.Contact1;
@@ -157,7 +157,7 @@ public class ContactsControllerTests
 
         var result = await controller.Put(id, contact).ConfigureAwait(false);
 
-        Assert.That(result, Is.InstanceOf<BadRequestResult>());
+        Assert.That(result, Is.InstanceOf<NotFoundResult>());
     }
 
     [Test]
