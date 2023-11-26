@@ -1,10 +1,12 @@
 - name: ✨ Getting started
-- name: 🚧 Introduction
+- name: Introduction
   href: ../index.md
-- name: 🚧 Getting started guide
-  href: ./getting-started/tutorial.md
-- name: 🚧 Framework architecture
-  href: ./getting-started/architecture.md
+- name: Framework architecture
+  href: ./architecture.md
+
+- name: 🔎 Quality assurance
+- name: System manual tests
+  href: ./manual-tests.md
 
 - name: 📃 API docs
 - name: REST API
