@@ -9,11 +9,14 @@ public class BuildContext : PleOpsBuildContext
         : base(context)
     {
         SwaggerDocName = string.Empty;
+        SwaggerProjectPath = string.Empty;
         SwaggerAssemblyPath = string.Empty;
         SwaggerDocFxPath = "docs/rest/";
     }
 
     public string SwaggerDocName { get; set; }
+
+    public string SwaggerProjectPath { get; set; }
 
     public string SwaggerAssemblyPath { get; set; }
 

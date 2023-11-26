@@ -12,11 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ContactsDbContext>(opts => {
     string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
     if (string.IsNullOrEmpty(connectionString)) {
-        if (builder.Environment.IsDevelopment()) {
-            connectionString = "test"; // bypass for swagger docs generation
-        } else {
-            throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
-        }
+        throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
     }
 
     opts.UseSqlite(connectionString);
