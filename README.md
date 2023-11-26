@@ -41,7 +41,10 @@ Check-out the [documentation site](https://www.pleonex.dev/owt-challenge).
 
 The project requires to build .NET 8.0 SDK.
 
-To build, test and generate artifacts run:
+You can open and build the project from any .NET IDE (Visual Studio, Rider) from
+the solution file: `./src/Contactor.sln`.
+
+To build, test and generate artifacts run from the command-line:
 
 ```sh
 # Build and run tests (with code coverage!)
