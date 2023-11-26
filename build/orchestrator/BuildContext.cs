@@ -14,6 +14,7 @@ public class BuildContext : PleOpsBuildContext
         SwaggerDocFxPath = "docs/rest/";
 
         DockerWebProject = string.Empty;
+        DockerImageName = string.Empty;
     }
 
     public string SwaggerDocName { get; set; }
