@@ -6,8 +6,8 @@
     <img alt="GitHub release" src="https://img.shields.io/github/v/release/pleonex/owt-challenge">
   </a>
   &nbsp;
-  <a href="https://github.com/pleonex/owt-challenge/workflows/Build%20and%20release">
-    <img alt="Build and release" src="https://github.com/pleonex/owt-challenge/workflows/Build%20and%20release/badge.svg?branch=main&event=push" />
+  <a href="https://github.com/pleonex/owt-challenge/actions/workflows/build-and-release.yml">
+    <img alt="Build and release" src="https://github.com/pleonex/owt-challenge/actions/workflows/build-and-release.yml/badge.svg" />
   </a>
   &nbsp;
   <a href="https://choosealicense.com/licenses/mit/">
