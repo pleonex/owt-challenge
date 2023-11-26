@@ -16,6 +16,7 @@ internal static class ContactsData
         Address = "Lutry",
         Email = "first1@last1.com",
         MobilePhone = "+4177810102030",
+        Skills = [],
     };
 
     public static ContactDtoOut Contact2 => contact2 ??= new ContactDtoOut {
@@ -25,6 +26,7 @@ internal static class ContactsData
         Address = "Lausanne",
         Email = "first2@last2.com",
         MobilePhone = "+4177810112131",
+        Skills = [],
     };
 
     public static ContactDtoIn InvalidContact => invalidContact ??= new ContactDtoIn {

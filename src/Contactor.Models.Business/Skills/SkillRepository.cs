@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class SkillRepository(ContactsDbContext dbContext) : ISkillRepository
 {
-    public async Task<IEnumerable<SkillDtoOut>> GetAll()
+    public async Task<IEnumerable<SkillDtoOut>> GetAllAsync()
     {
         List<Skill> list = await dbContext.Skills
             .Include(s => s.Contacts)
@@ -18,7 +18,7 @@ public class SkillRepository(ContactsDbContext dbContext) : ISkillRepository
         return list.Select(SkillDtoOut.FromModel);
     }
 
-    public async Task<SkillDtoOut?> GetById(int id)
+    public async Task<SkillDtoOut?> GetByIdAsync(int id)
     {
         Skill? model = await dbContext.Skills
             .Include(s => s.Contacts)
@@ -28,7 +28,7 @@ public class SkillRepository(ContactsDbContext dbContext) : ISkillRepository
         return model is null ? null : SkillDtoOut.FromModel(model);
     }
 
-    public async Task<bool> RemoveById(int id)
+    public async Task<bool> RemoveByIdAsync(int id)
     {
         Skill? model = await dbContext.Skills.FindAsync(id).ConfigureAwait(false);
         if (model is null) {
@@ -41,7 +41,7 @@ public class SkillRepository(ContactsDbContext dbContext) : ISkillRepository
         return true;
     }
 
-    public async Task<bool> UpdateById(int id, SkillDtoIn dto)
+    public async Task<bool> UpdateByIdAsync(int id, SkillDtoIn dto)
     {
         Skill? model = await dbContext.Skills.FindAsync(id).ConfigureAwait(false);
         if (model is null) {

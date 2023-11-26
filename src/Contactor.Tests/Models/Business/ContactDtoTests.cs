@@ -1,4 +1,4 @@
-﻿namespace Contactor.Tests.BusinessModels;
+﻿namespace Contactor.Tests.Models.Business;
 
 using System.Linq;
 using Contactor.Models.Business.Contacts;

@@ -12,14 +12,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ContactsDbContext>(opts => {
     string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
     if (string.IsNullOrEmpty(connectionString)) {
-        if (builder.Environment.IsDevelopment()) {
-            connectionString = "test"; // bypass for swagger docs generation
-        } else {
-            throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
-        }
+        throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
     }
 
-    opts.UseInMemoryDatabase(connectionString);
+    opts.UseSqlite(connectionString);
  });
 
 builder.Services.AddScoped<IContactsRepository, ContactsRepository>()
@@ -65,11 +61,11 @@ if (app.Environment.IsDevelopment()) {
 }
 
 // Create database if it doesn't exist
-// TODO: Remove for production and use migrations
+// TODO: For production use migration tools
 using (var scope = app.Services.CreateScope()) {
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<ContactsDbContext>();
-    context.Database.EnsureCreated();
+    context.Database.Migrate();
 }
 
 app.UseAuthorization();

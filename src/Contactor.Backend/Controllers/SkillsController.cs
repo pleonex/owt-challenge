@@ -21,7 +21,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IEnumerable<SkillDtoOut>> GetAllSkills()
     {
-        return await repository.GetAll().ConfigureAwait(false);
+        return await repository.GetAllAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<SkillDtoOut>> GetSkillsById(int id)
     {
-        SkillDtoOut? skill = await repository.GetById(id).ConfigureAwait(false);
+        SkillDtoOut? skill = await repository.GetByIdAsync(id).ConfigureAwait(false);
         return skill is null ? NotFound() : skill;
     }
 
@@ -52,7 +52,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteSkillById(int id)
     {
-        bool result = await repository.RemoveById(id).ConfigureAwait(false);
+        bool result = await repository.RemoveByIdAsync(id).ConfigureAwait(false);
         return result ? NoContent() : NotFound();
     }
 
@@ -79,7 +79,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
             return BadRequest();
         }
 
-        bool result = await repository.UpdateById(id, value).ConfigureAwait(false);
+        bool result = await repository.UpdateByIdAsync(id, value).ConfigureAwait(false);
         return result ? NoContent() : NotFound();
     }
 }

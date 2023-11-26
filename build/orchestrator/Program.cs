@@ -23,7 +23,8 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         context.DotNetContext.ApplicationProjects.Add(new ProjectPublicationInfo(
             "./src/Contactor.Backend", ["win-x64"], "net8.0"));
 
-        context.SwaggerAssemblyPath = $"./src/Contactor.Backend/bin/{context.DotNetContext.Configuration}/net8.0/Contactor.Backend.dll";
+        context.SwaggerProjectPath = "src/Contactor.Backend";
+        context.SwaggerAssemblyPath = $"bin/{context.DotNetContext.Configuration}/net8.0/Contactor.Backend.dll";
         context.SwaggerDocName = "v1";
 
         // Print the build info to use.

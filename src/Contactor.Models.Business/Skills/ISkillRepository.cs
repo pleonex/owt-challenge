@@ -1,11 +1,11 @@
 ﻿namespace Contactor.Models.Business.Skills;
 public interface ISkillRepository
 {
-    Task<IEnumerable<SkillDtoOut>> GetAll();
+    Task<IEnumerable<SkillDtoOut>> GetAllAsync();
 
-    Task<SkillDtoOut?> GetById(int id);
+    Task<SkillDtoOut?> GetByIdAsync(int id);
 
-    Task<bool> UpdateById(int id, SkillDtoIn dto);
+    Task<bool> UpdateByIdAsync(int id, SkillDtoIn dto);
 
-    Task<bool> RemoveById(int id);
+    Task<bool> RemoveByIdAsync(int id);
 }

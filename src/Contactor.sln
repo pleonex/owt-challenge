@@ -9,13 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contactor.Backend", "Contac
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B4EBBBC2-D738-47B1-8F33-88D34855577A}"
 	ProjectSection(SolutionItems) = preProject
+		..\.gitignore = ..\.gitignore
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contactor.Models.Domain", "Contactor.Models.Domain\Contactor.Models.Domain.csproj", "{6AB2DA6B-7F13-4821-98ED-4D54BF287E18}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contactor.Models.Domain", "Contactor.Models.Domain\Contactor.Models.Domain.csproj", "{6AB2DA6B-7F13-4821-98ED-4D54BF287E18}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contactor.Models.Business", "Contactor.Models.Business\Contactor.Models.Business.csproj", "{77EF46C7-3FCD-4D82-A88A-F047327C5EE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contactor.Models.Business", "Contactor.Models.Business\Contactor.Models.Business.csproj", "{77EF46C7-3FCD-4D82-A88A-F047327C5EE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

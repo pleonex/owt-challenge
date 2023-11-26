@@ -4,17 +4,17 @@ using Contactor.Models.Business.Skills;
 
 public interface IContactsRepository
 {
-    Task<int> Create(ContactDtoIn dto);
+    Task<int> CreateAsync(ContactDtoIn dto);
 
-    Task<IEnumerable<ContactDtoOut>> GetAll();
+    Task<IEnumerable<ContactDtoOut>> GetAllAsync();
 
-    Task<ContactDtoOut?> GetById(int id);
+    Task<ContactDtoOut?> GetByIdAsync(int id);
 
-    Task<bool> UpdateById(int id, ContactDtoIn dto);
+    Task<bool> UpdateByIdAsync(int id, ContactDtoIn dto);
 
-    Task<bool> RemoveById(int id);
+    Task<bool> RemoveByIdAsync(int id);
 
-    Task<int> CreateSkill(int userId, SkillDtoIn skill);
+    Task<int> CreateSkillAsync(int userId, SkillDtoIn skill);
 
-    Task<bool> DeleteSkill(int userId, int skillId);
+    Task<bool> DeleteSkillAsync(int userId, int skillId);
 }

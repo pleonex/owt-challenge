@@ -27,7 +27,8 @@ public class ExportSwaggerFileTask : FrostingTask<BuildContext>
         context.DotNetTool(
             "swagger " + args,
             new DotNetToolSettings()
-                .WithEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development"));
+                .WithEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development")
+                .WithWorkingDirectory(context.SwaggerProjectPath));
 
         // Copy to DocFx docs too
         if (!Directory.Exists(context.SwaggerDocFxPath)) {

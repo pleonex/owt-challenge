@@ -22,7 +22,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IEnumerable<ContactDtoOut>> GetAllContacts()
     {
-        return await contactsRepo.GetAll().ConfigureAwait(false);
+        return await contactsRepo.GetAllAsync().ConfigureAwait(false);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<ActionResult<ContactDtoOut>> GetContactById(int id)
     {
-        ContactDtoOut? contact = await contactsRepo.GetById(id);
+        ContactDtoOut? contact = await contactsRepo.GetByIdAsync(id);
         return contact is null ? NotFound() : contact;
     }
 
@@ -58,7 +58,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
             return BadRequest();
         }
 
-        int itemId = await contactsRepo.Create(value);
+        int itemId = await contactsRepo.CreateAsync(value);
         return CreatedAtAction(nameof(GetContactById), new { id = itemId }, value);
     }
 
@@ -82,7 +82,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
             return BadRequest();
         }
 
-        bool result = await contactsRepo.UpdateById(id, value);
+        bool result = await contactsRepo.UpdateByIdAsync(id, value);
         if (!result) {
             return NotFound();
         }
@@ -103,7 +103,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesDefaultResponseType]
     public async Task<IActionResult> DeleteContactById(int id)
     {
-        bool result = await contactsRepo.RemoveById(id);
+        bool result = await contactsRepo.RemoveByIdAsync(id);
         if (!result) {
             return NotFound();
         }
@@ -129,7 +129,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
             return BadRequest();
         }
 
-        int result = await contactsRepo.CreateSkill(userId, value);
+        int result = await contactsRepo.CreateSkillAsync(userId, value);
         if (result < 0) {
             return NotFound();
         }
@@ -150,7 +150,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> DeleteContactSkillById(int userId, int skillId)
     {
-        bool result = await contactsRepo.DeleteSkill(userId, skillId);
+        bool result = await contactsRepo.DeleteSkillAsync(userId, skillId);
 
         return result ? NoContent() : NotFound();
     }

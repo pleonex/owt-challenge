@@ -18,7 +18,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.GetAll())
+        repository.Setup(x => x.GetAllAsync())
             .ReturnsAsync(expected)
             .Verifiable(Times.Once);
 
@@ -35,7 +35,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.GetById(skill.Id))
+        repository.Setup(x => x.GetByIdAsync(skill.Id))
             .ReturnsAsync(skill)
             .Verifiable(Times.Once);
 
@@ -52,7 +52,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.GetById(skillId))
+        repository.Setup(x => x.GetByIdAsync(skillId))
             .ReturnsAsync((SkillDtoOut)null)
             .Verifiable(Times.Once);
 
@@ -70,7 +70,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(skill.Id, skill))
+        repository.Setup(x => x.UpdateByIdAsync(skill.Id, skill))
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
@@ -99,7 +99,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(skill.Id, skill))
+        repository.Setup(x => x.UpdateByIdAsync(skill.Id, skill))
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 
@@ -116,7 +116,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.RemoveById(skillId))
+        repository.Setup(x => x.RemoveByIdAsync(skillId))
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
@@ -133,7 +133,7 @@ public class SkillsControllerTests
         var repository = new Mock<ISkillRepository>();
         var controller = new SkillsController(repository.Object);
 
-        repository.Setup(x => x.RemoveById(skillId))
+        repository.Setup(x => x.RemoveByIdAsync(skillId))
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 
