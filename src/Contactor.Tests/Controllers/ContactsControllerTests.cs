@@ -22,7 +22,7 @@ public class ContactsControllerTests
             .ReturnsAsync(expected)
             .Verifiable(Times.Once);
 
-        var actualContacts = await controller.Get().ConfigureAwait(false);
+        var actualContacts = await controller.GetAllContacts().ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(actualContacts, Is.EquivalentTo(expected));
@@ -40,7 +40,7 @@ public class ContactsControllerTests
         repository.Setup(x => x.GetById(id))
             .ReturnsAsync(expected);
 
-        var result = await controller.Get(id).ConfigureAwait(false);
+        var result = await controller.GetContactById(id).ConfigureAwait(false);
 
         Assert.That(result.Value, Is.SameAs(expected));
     }
@@ -55,7 +55,7 @@ public class ContactsControllerTests
         repository.Setup(x => x.GetById(id))
             .ReturnsAsync((ContactDtoOut)null);
 
-        var result = await controller.Get(id).ConfigureAwait(false);
+        var result = await controller.GetContactById(id).ConfigureAwait(false);
 
         Assert.That(result.Result, Is.TypeOf<NotFoundResult>());
         Assert.That(result.Value, Is.Null);
@@ -73,7 +73,7 @@ public class ContactsControllerTests
             .ReturnsAsync(id)
             .Verifiable(Times.Once);
 
-        _ = await controller.Post(contact).ConfigureAwait(false);
+        _ = await controller.CreateNewContact(contact).ConfigureAwait(false);
 
         repository.Verify();
     }
@@ -89,11 +89,11 @@ public class ContactsControllerTests
         repository.Setup(x => x.Create(contact))
             .ReturnsAsync(id);
 
-        var result = await controller.Post(contact).ConfigureAwait(false);
+        var result = await controller.CreateNewContact(contact).ConfigureAwait(false);
         var createdResult = result as CreatedAtActionResult;
 
         Assert.That(createdResult, Is.Not.Null);
-        Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.Get)));
+        Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.GetContactById)));
         Assert.That(createdResult.RouteValues["id"], Is.EqualTo(id));
         Assert.That(createdResult.Value, Is.SameAs(contact));
     }
@@ -107,7 +107,7 @@ public class ContactsControllerTests
 
         // Actual model validation is done in other test suite - Here we just give it one error
         controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
-        var result = await controller.Post(contact).ConfigureAwait(false);
+        var result = await controller.CreateNewContact(contact).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
@@ -124,7 +124,7 @@ public class ContactsControllerTests
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
-        var result = await controller.Put(id, contact).ConfigureAwait(false);
+        var result = await controller.UpdateContactById(id, contact).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -142,7 +142,7 @@ public class ContactsControllerTests
             .Verifiable(Times.Never);
 
         controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
-        var result = await controller.Put(id, contact).ConfigureAwait(false);
+        var result = await controller.UpdateContactById(id, contact).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
@@ -159,7 +159,7 @@ public class ContactsControllerTests
         repository.Setup(x => x.UpdateById(id, contact))
             .ReturnsAsync(false);
 
-        var result = await controller.Put(id, contact).ConfigureAwait(false);
+        var result = await controller.UpdateContactById(id, contact).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<NotFoundResult>());
     }
@@ -174,7 +174,7 @@ public class ContactsControllerTests
         repository.Setup(x => x.RemoveById(id))
             .ReturnsAsync(true);
 
-        var result = await controller.Delete(id).ConfigureAwait(false);
+        var result = await controller.DeleteContactById(id).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -190,7 +190,7 @@ public class ContactsControllerTests
         repository.Setup(x => x.RemoveById(id))
             .ReturnsAsync(false);
 
-        var result = await controller.Delete(id).ConfigureAwait(false);
+        var result = await controller.DeleteContactById(id).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<NotFoundResult>());
     }
@@ -208,12 +208,12 @@ public class ContactsControllerTests
             .ReturnsAsync(skillId)
             .Verifiable(Times.Once);
 
-        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+        var result = await controller.CreateContactSkillById(userId, skill).ConfigureAwait(false);
         var createdResult = result as CreatedAtActionResult;
 
         repository.Verify();
         Assert.That(createdResult, Is.Not.Null);
-        Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.Get)));
+        Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.GetContactById)));
         Assert.That(createdResult.RouteValues["id"], Is.EqualTo(userId));
         Assert.That(createdResult.Value, Is.SameAs(skill));
     }
@@ -227,7 +227,7 @@ public class ContactsControllerTests
         var controller = new ContactsController(repository.Object);
 
         controller.ModelState.AddModelError("error", "Something is wrong with the input");
-        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+        var result = await controller.CreateContactSkillById(userId, skill).ConfigureAwait(false);
 
         Assert.That(result, Is.TypeOf<BadRequestResult>());
     }
@@ -244,7 +244,7 @@ public class ContactsControllerTests
             .ReturnsAsync(-1)
             .Verifiable(Times.Once);
 
-        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+        var result = await controller.CreateContactSkillById(userId, skill).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<NotFoundResult>());
     }
@@ -261,7 +261,7 @@ public class ContactsControllerTests
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
-        var result = await controller.DeleteSkill(userId, skillId).ConfigureAwait(false);
+        var result = await controller.DeleteContactSkillById(userId, skillId).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -279,7 +279,7 @@ public class ContactsControllerTests
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 
-        var result = await controller.DeleteSkill(userId, skillId).ConfigureAwait(false);
+        var result = await controller.DeleteContactSkillById(userId, skillId).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NotFoundResult>());

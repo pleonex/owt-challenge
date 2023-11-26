@@ -48,7 +48,7 @@ public sealed class DefaultTask : FrostingTask
 [TaskName("Bundle")]
 [IsDependentOn(typeof(Cake.Frosting.PleOps.Recipe.Common.SetGitVersionTask))]
 [IsDependentOn(typeof(Cake.Frosting.PleOps.Recipe.GitHub.ExportReleaseNotesTask))]
-[IsDependentOn(typeof(Cake.Frosting.PleOps.Recipe.Dotnet.DotnetTasks.BundleProjectTask))]
+[IsDependentOn(typeof(Cake.Frosting.PleOps.Recipe.Dotnet.BundleApplicationsTask))]
 [IsDependentOn(typeof(ExportSwaggerFileTask))]
 [IsDependentOn(typeof(Cake.Frosting.PleOps.Recipe.DocFx.BuildTask))]
 public sealed class BundleTask : FrostingTask

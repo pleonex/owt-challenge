@@ -34,7 +34,8 @@ public class ExportSwaggerFileTask : FrostingTask<BuildContext>
             Directory.CreateDirectory(context.SwaggerDocFxPath);
         }
 
-        File.Copy(outputFile, context.SwaggerDocFxPath);
+        string docsFile = Path.Combine(context.SwaggerDocFxPath, outputFilename);
+        File.Copy(outputFile, docsFile, true);
 
         // Mark to upload as an artifact in the GitHub release
         context.DeliveriesContext.BinaryFiles.Add(outputFile);

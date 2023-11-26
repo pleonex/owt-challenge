@@ -19,7 +19,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     /// <response code="200"></response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IEnumerable<SkillDtoOut>> Get()
+    public async Task<IEnumerable<SkillDtoOut>> GetAllSkills()
     {
         return await repository.GetAll().ConfigureAwait(false);
     }
@@ -34,7 +34,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<SkillDtoOut>> Get(int id)
+    public async Task<ActionResult<SkillDtoOut>> GetSkillsById(int id)
     {
         SkillDtoOut? skill = await repository.GetById(id).ConfigureAwait(false);
         return skill is null ? NotFound() : skill;
@@ -50,7 +50,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> DeleteSkillById(int id)
     {
         bool result = await repository.RemoveById(id).ConfigureAwait(false);
         return result ? NoContent() : NotFound();
@@ -73,7 +73,7 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Put(int id, [FromBody] SkillDtoIn value)
+    public async Task<IActionResult> UpdateSkillById(int id, [FromBody] SkillDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();

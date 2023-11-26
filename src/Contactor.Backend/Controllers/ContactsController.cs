@@ -20,7 +20,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     /// <response code="200">Returns the current contact list.</response>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<IEnumerable<ContactDtoOut>> Get()
+    public async Task<IEnumerable<ContactDtoOut>> GetAllContacts()
     {
         return await contactsRepo.GetAll().ConfigureAwait(false);
     }
@@ -35,7 +35,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<ContactDtoOut>> Get(int id)
+    public async Task<ActionResult<ContactDtoOut>> GetContactById(int id)
     {
         ContactDtoOut? contact = await contactsRepo.GetById(id);
         return contact is null ? NotFound() : contact;
@@ -52,14 +52,14 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult> Post([FromBody] ContactDtoIn value)
+    public async Task<ActionResult> CreateNewContact([FromBody] ContactDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
         }
 
         int itemId = await contactsRepo.Create(value);
-        return CreatedAtAction(nameof(Get), new { id = itemId }, value);
+        return CreatedAtAction(nameof(GetContactById), new { id = itemId }, value);
     }
 
     /// <summary>
@@ -76,7 +76,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Put(int id, [FromBody] ContactDtoIn value)
+    public async Task<IActionResult> UpdateContactById(int id, [FromBody] ContactDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -101,7 +101,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> DeleteContactById(int id)
     {
         bool result = await contactsRepo.RemoveById(id);
         if (!result) {
@@ -123,7 +123,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult> PostSkill(int userId, [FromBody] SkillDtoIn value)
+    public async Task<ActionResult> CreateContactSkillById(int userId, [FromBody] SkillDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -134,7 +134,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
             return NotFound();
         }
 
-        return CreatedAtAction(nameof(Get), new { id = userId }, value);
+        return CreatedAtAction(nameof(GetContactById), new { id = userId }, value);
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [HttpDelete("{userId}/skills/{skillId}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> DeleteSkill(int userId, int skillId)
+    public async Task<IActionResult> DeleteContactSkillById(int userId, int skillId)
     {
         bool result = await contactsRepo.DeleteSkill(userId, skillId);
 

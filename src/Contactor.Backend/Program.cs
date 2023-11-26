@@ -13,7 +13,7 @@ builder.Services.AddDbContext<ContactsDbContext>(opts => {
     string? connectionString = builder.Configuration.GetConnectionString("ContactsDatabase");
     if (string.IsNullOrEmpty(connectionString)) {
         if (builder.Environment.IsDevelopment()) {
-            connectionString = string.Empty; // bypass for swagger docs generation
+            connectionString = "test"; // bypass for swagger docs generation
         } else {
             throw new InvalidOperationException("Missing connection string 'ContactsDatabase'");
         }
@@ -50,8 +50,7 @@ builder.Services.AddSwaggerGen(opts => {
 
     // DocFx requires operationIds. They need to be unique across full API.
     opts.CustomOperationIds(apiDesc => {
-        return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo)
-            ? $"{methodInfo.DeclaringType!.Name}_{methodInfo.Name}" : null;
+        return apiDesc.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
     });
 });
 
