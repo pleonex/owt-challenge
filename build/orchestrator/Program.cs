@@ -28,6 +28,7 @@ public sealed class BuildLifetime : FrostingLifetime<BuildContext>
         context.SwaggerDocName = "v1";
 
         context.DockerWebProject = "src/Contactor.Backend";
+        context.DockerImageName = "pleonex/owt-contactor-backend";
 
         // Print the build info to use.
         context.Print();

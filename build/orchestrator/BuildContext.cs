@@ -25,4 +25,6 @@ public class BuildContext : PleOpsBuildContext
     public string SwaggerDocFxPath { get; set; }
 
     public string DockerWebProject { get; set; }
+
+    public string DockerImageName { get; set; }
 }
