@@ -1,6 +1,7 @@
 ﻿namespace Contactor.Backend.Controllers;
 
-using Contactor.Backend.Models;
+using Contactor.Backend.Models.Dto.Contacts;
+using Contactor.Backend.Models.Dto.Skills;
 using Microsoft.AspNetCore.Mvc;
 
 [Route("api/[controller]")]
@@ -9,16 +10,16 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
 {
     // GET: api/<ContactsController>
     [HttpGet]
-    public async Task<IEnumerable<ContactDto>> Get()
+    public async Task<IEnumerable<ContactDtoOut>> Get()
     {
-        return await contactsRepo.GetAll();
+        return await contactsRepo.GetAll().ConfigureAwait(false);
     }
 
     // GET api/<ContactsController>/5
     [HttpGet("{id}")]
-    public async Task<ActionResult<ContactDto>> Get(int id)
+    public async Task<ActionResult<ContactDtoOut>> Get(int id)
     {
-        ContactDto? contact = await contactsRepo.GetById(id);
+        ContactDtoOut? contact = await contactsRepo.GetById(id);
         return contact is null ? NotFound() : contact;
     }
 
@@ -27,7 +28,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<ContactDto>> Post([FromBody] ContactDto value)
+    public async Task<ActionResult<ContactDtoIn>> Post([FromBody] ContactDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -42,13 +43,9 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> Put(int id, [FromBody] ContactDto value)
+    public async Task<IActionResult> Put(int id, [FromBody] ContactDtoIn value)
     {
-        if (id != value.Id) {
-            return BadRequest();
-        }
-
-        bool result = await contactsRepo.UpdateById(value);
+        bool result = await contactsRepo.UpdateById(id, value);
         if (!result) {
             return BadRequest();
         }
@@ -69,5 +66,29 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
         }
 
         return NoContent();
+    }
+
+    // POST api/<ContactsController>/5/skills
+    [HttpPost("{userId}/skills")]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
+    public async Task<IActionResult> PostSkill(int userId, [FromBody] SkillDtoIn value)
+    {
+        int result = await contactsRepo.CreateSkill(userId, value);
+        if (result < 0) {
+            return NotFound();
+        }
+
+        return CreatedAtAction(nameof(Get), new { id = result }, value);
+    }
+
+    // DELETE api/<ContactsController>/5/skills/1
+    [HttpDelete("{userId}/skills/{skillId}")]
+    public async Task<IActionResult> DeleteSkill(int userId, int skillId)
+    {
+        bool result = await contactsRepo.DeleteSkill(userId, skillId);
+
+        return result ? NoContent() : NotFound();
     }
 }

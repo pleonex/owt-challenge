@@ -2,7 +2,7 @@
 
 using System.Threading.Tasks;
 using Contactor.Backend.Controllers;
-using Contactor.Backend.Models;
+using Contactor.Backend.Models.Dto.Contacts;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -13,7 +13,7 @@ public class ContactControllerTests
     [Test]
     public async Task GetReturnsFullList()
     {
-        ContactDto[] expected = ContactsData.AllContacts;
+        ContactDtoOut[] expected = ContactsData.AllContacts;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
@@ -28,7 +28,7 @@ public class ContactControllerTests
     [Test]
     public async Task GetByIdReturnsExpectedContact()
     {
-        ContactDto expected = ContactsData.Contact2;
+        ContactDtoOut expected = ContactsData.Contact2;
         int id = 2;
 
         var repository = new Mock<IContactsRepository>();
@@ -50,7 +50,7 @@ public class ContactControllerTests
         var controller = new ContactsController(repository.Object);
 
         repository.Setup(x => x.GetById(id))
-            .ReturnsAsync((ContactDto)null);
+            .ReturnsAsync((ContactDtoOut)null);
 
         var result = await controller.Get(id).ConfigureAwait(false);
 
@@ -61,12 +61,13 @@ public class ContactControllerTests
     [Test]
     public async Task PostCreatesNewContact()
     {
-        ContactDto contact = ContactsData.Contact1;
+        int id = 1;
+        ContactDtoIn contact = ContactsData.Contact1;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
         repository.Setup(x => x.Create(contact))
-            .ReturnsAsync(contact.Id)
+            .ReturnsAsync(id)
             .Verifiable(Times.Once);
 
         _ = await controller.Post(contact).ConfigureAwait(false);
@@ -77,31 +78,32 @@ public class ContactControllerTests
     [Test]
     public async Task PostReturnsRedirection()
     {
-        ContactDto contact = ContactsData.Contact1;
+        int id = 1;
+        ContactDtoIn contact = ContactsData.Contact1;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
         repository.Setup(x => x.Create(contact))
-            .ReturnsAsync(contact.Id);
+            .ReturnsAsync(id);
 
         var result = await controller.Post(contact).ConfigureAwait(false);
         var createdResult = result.Result as CreatedAtActionResult;
 
         Assert.That(createdResult, Is.Not.Null);
         Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.Get)));
-        Assert.That(createdResult.RouteValues["id"], Is.EqualTo(contact.Id));
+        Assert.That(createdResult.RouteValues["id"], Is.EqualTo(id));
         Assert.That(createdResult.Value, Is.SameAs(contact));
     }
 
     [Test]
     public async Task PostChecksModelValidationAndReturnsBadRequest()
     {
-        ContactDto contact = ContactsData.InvalidContact;
+        ContactDtoIn contact = ContactsData.InvalidContact;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
         // Actual model validation is done in other test suite - Here we just give it one error
-        controller.ModelState.AddModelError(nameof(ContactDto.FirstName), "Invalid name");
+        controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
         var result = await controller.Post(contact).ConfigureAwait(false);
 
         Assert.That(result.Result, Is.InstanceOf<BadRequestResult>());
@@ -110,15 +112,16 @@ public class ContactControllerTests
     [Test]
     public async Task PutUpdatesModel()
     {
-        ContactDto contact = ContactsData.Contact1;
+        int id = 1;
+        ContactDtoIn contact = ContactsData.Contact1;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(contact))
+        repository.Setup(x => x.UpdateById(id, contact))
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
-        var result = await controller.Put(contact.Id, contact).ConfigureAwait(false);
+        var result = await controller.Put(id, contact).ConfigureAwait(false);
 
         repository.Verify();
         Assert.That(result, Is.InstanceOf<NoContentResult>());
@@ -127,24 +130,13 @@ public class ContactControllerTests
     [Test]
     public async Task PutValidatesModel()
     {
-        ContactDto contact = ContactsData.InvalidContact;
+        int id = 1;
+        ContactDtoIn contact = ContactsData.InvalidContact;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        controller.ModelState.AddModelError(nameof(ContactDto.FirstName), "Invalid name");
-        var result = await controller.Put(contact.Id, contact).ConfigureAwait(false);
-
-        Assert.That(result, Is.InstanceOf<BadRequestResult>());
-    }
-
-    [Test]
-    public async Task PutRouteIdMatchesModelOrReturnsBadRequest()
-    {
-        ContactDto contact = ContactsData.Contact1;
-        var repository = new Mock<IContactsRepository>();
-        var controller = new ContactsController(repository.Object);
-
-        var result = await controller.Put(contact.Id + 1, contact).ConfigureAwait(false);
+        controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
+        var result = await controller.Put(id, contact).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
@@ -152,14 +144,15 @@ public class ContactControllerTests
     [Test]
     public async Task PutFailedToUpdateReturnsBadRequest()
     {
-        ContactDto contact = ContactsData.Contact1;
+        int id = 1;
+        ContactDtoIn contact = ContactsData.Contact1;
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(contact))
+        repository.Setup(x => x.UpdateById(id, contact))
             .ReturnsAsync(false);
 
-        var result = await controller.Put(contact.Id, contact).ConfigureAwait(false);
+        var result = await controller.Put(id, contact).ConfigureAwait(false);
 
         Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
