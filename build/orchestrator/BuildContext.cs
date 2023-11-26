@@ -12,6 +12,8 @@ public class BuildContext : PleOpsBuildContext
         SwaggerProjectPath = string.Empty;
         SwaggerAssemblyPath = string.Empty;
         SwaggerDocFxPath = "docs/rest/";
+
+        DockerWebProject = string.Empty;
     }
 
     public string SwaggerDocName { get; set; }
@@ -21,4 +23,6 @@ public class BuildContext : PleOpsBuildContext
     public string SwaggerAssemblyPath { get; set; }
 
     public string SwaggerDocFxPath { get; set; }
+
+    public string DockerWebProject { get; set; }
 }
