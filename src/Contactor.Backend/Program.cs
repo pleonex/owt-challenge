@@ -1,5 +1,6 @@
-﻿using Contactor.Backend;
-using Contactor.Backend.Models;
+﻿using Contactor.Backend.Models.Domain;
+using Contactor.Backend.Models.Dto.Contacts;
+using Contactor.Backend.Models.Dto.Skills;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,8 @@ builder.Services.AddDbContext<ContactsDbContext>(opts => {
     opts.UseInMemoryDatabase(connectionString);
  });
 
-builder.Services.AddScoped<IContactsRepository, ContactsRepository>();
+builder.Services.AddScoped<IContactsRepository, ContactsRepository>()
+    .AddScoped<ISkillRepository, SkillRepository>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

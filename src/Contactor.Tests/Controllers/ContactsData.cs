@@ -1,14 +1,15 @@
 ﻿namespace Contactor.Tests.Controllers;
-using Contactor.Backend.Models;
+
+using Contactor.Backend.Models.Dto.Contacts;
 
 internal static class ContactsData
 {
-    private static ContactDto contact1;
-    private static ContactDto contact2;
-    private static ContactDto invalidContact;
-    private static ContactDto[] allContacts;
-
-    public static ContactDto Contact1 => contact1 ??= new ContactDto {
+    private static ContactDtoOut contact1;
+    private static ContactDtoOut contact2;
+    private static ContactDtoIn invalidContact;
+    private static ContactDtoOut[] allContacts;
+    private static ContactDtoOut.SkillDto contactSkill;
+    public static ContactDtoOut Contact1 => contact1 ??= new ContactDtoOut {
         Id = 1,
         FirstName = "First1",
         LastName = "Last1",
@@ -17,7 +18,7 @@ internal static class ContactsData
         MobilePhone = "+4177810102030",
     };
 
-    public static ContactDto Contact2 => contact2 ??= new ContactDto {
+    public static ContactDtoOut Contact2 => contact2 ??= new ContactDtoOut {
         Id = 2,
         FirstName = "First2",
         LastName = "Last2",
@@ -26,8 +27,7 @@ internal static class ContactsData
         MobilePhone = "+4177810112131",
     };
 
-    public static ContactDto InvalidContact => invalidContact ??= new ContactDto {
-        Id = 2,
+    public static ContactDtoIn InvalidContact => invalidContact ??= new ContactDtoIn {
         FirstName = "",
         LastName = "",
         Address = "",
@@ -35,5 +35,11 @@ internal static class ContactsData
         MobilePhone = "-4177810112131",
     };
 
-    public static ContactDto[] AllContacts => allContacts ??= [Contact1, Contact2];
+    public static ContactDtoOut[] AllContacts => allContacts ??= [Contact1, Contact2];
+
+    public static ContactDtoOut.SkillDto ContactSkill => contactSkill ??= new() {
+        Id = 1,
+        Name = "csharp",
+        Level = 5,
+    };
 }

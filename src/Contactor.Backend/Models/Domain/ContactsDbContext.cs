@@ -1,6 +1,5 @@
-﻿namespace Contactor.Backend;
+﻿namespace Contactor.Backend.Models.Domain;
 
-using Contactor.Backend.Models;
 using Microsoft.EntityFrameworkCore;
 
 public class ContactsDbContext : DbContext
@@ -11,4 +10,6 @@ public class ContactsDbContext : DbContext
     }
 
     public DbSet<Contact> Contacts { get; set; }
+
+    public DbSet<Skill> Skills { get; set; }
 }

@@ -10,7 +10,6 @@ Accept: text/plain
 Content-Type: application/json
 
 {
-    "id": 0,
     "FirstName": "Benito",
     "LastName": "Palacios Sanchez",
     "Address": "Somewhere Lutry",
@@ -22,3 +21,34 @@ Content-Type: application/json
 
 GET {{Contactor.Backend_HostAddress}}/api/Contacts/1
 Accept: application/json
+
+###
+
+POST {{Contactor.Backend_HostAddress}}/api/Contacts/1/skills
+Content-Type: application/json
+
+{
+    "name": "csharp",
+    "level": 5
+}
+
+###
+
+POST {{Contactor.Backend_HostAddress}}/api/Contacts/1/skills
+Content-Type: application/json
+
+{
+    "name": "java",
+    "level": 3
+}
+
+###
+
+DELETE {{Contactor.Backend_HostAddress}}/api/Contacts/1/skills/1
+
+###
+
+GET {{Contactor.Backend_HostAddress}}/api/Skills
+Accept: application/json
+
+###
