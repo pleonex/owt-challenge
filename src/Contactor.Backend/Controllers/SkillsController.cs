@@ -32,8 +32,13 @@ public class SkillsController(ISkillRepository repository) : ControllerBase
 
     // PUT api/<SkillsController>/5
     [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Put(int id, [FromBody] SkillDtoIn value)
     {
+        if (!ModelState.IsValid) {
+            return BadRequest();
+        }
+
         bool result = await repository.UpdateById(id, value).ConfigureAwait(false);
         return result ? NoContent() : NotFound();
     }

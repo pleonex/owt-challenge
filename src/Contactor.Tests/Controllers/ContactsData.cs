@@ -8,7 +8,7 @@ internal static class ContactsData
     private static ContactDtoOut contact2;
     private static ContactDtoIn invalidContact;
     private static ContactDtoOut[] allContacts;
-
+    private static ContactDtoOut.SkillDto contactSkill;
     public static ContactDtoOut Contact1 => contact1 ??= new ContactDtoOut {
         Id = 1,
         FirstName = "First1",
@@ -36,4 +36,10 @@ internal static class ContactsData
     };
 
     public static ContactDtoOut[] AllContacts => allContacts ??= [Contact1, Contact2];
+
+    public static ContactDtoOut.SkillDto ContactSkill => contactSkill ??= new() {
+        Id = 1,
+        Name = "csharp",
+        Level = 5,
+    };
 }

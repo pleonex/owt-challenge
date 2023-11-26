@@ -3,12 +3,13 @@
 using System.Threading.Tasks;
 using Contactor.Backend.Controllers;
 using Contactor.Backend.Models.Dto.Contacts;
+using Contactor.Backend.Models.Dto.Skills;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
 
 [TestFixture]
-public class ContactControllerTests
+public class ContactsControllerTests
 {
     [Test]
     public async Task GetReturnsFullList()
@@ -18,10 +19,12 @@ public class ContactControllerTests
         var controller = new ContactsController(repository.Object);
 
         repository.Setup(x => x.GetAll())
-            .ReturnsAsync(expected);
+            .ReturnsAsync(expected)
+            .Verifiable(Times.Once);
 
         var actualContacts = await controller.Get().ConfigureAwait(false);
 
+        repository.Verify();
         Assert.That(actualContacts, Is.EquivalentTo(expected));
     }
 
@@ -87,7 +90,7 @@ public class ContactControllerTests
             .ReturnsAsync(id);
 
         var result = await controller.Post(contact).ConfigureAwait(false);
-        var createdResult = result.Result as CreatedAtActionResult;
+        var createdResult = result as CreatedAtActionResult;
 
         Assert.That(createdResult, Is.Not.Null);
         Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.Get)));
@@ -106,7 +109,7 @@ public class ContactControllerTests
         controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
         var result = await controller.Post(contact).ConfigureAwait(false);
 
-        Assert.That(result.Result, Is.InstanceOf<BadRequestResult>());
+        Assert.That(result, Is.InstanceOf<BadRequestResult>());
     }
 
     [Test]
@@ -185,6 +188,96 @@ public class ContactControllerTests
 
         var result = await controller.Delete(id).ConfigureAwait(false);
 
+        Assert.That(result, Is.InstanceOf<NotFoundResult>());
+    }
+
+    [Test]
+    public async Task AddSkillsUpdatesContactAndReturnsRelocation()
+    {
+        int userId = 1;
+        int skillId = 5;
+        SkillDtoIn skill = SkillsData.Skill1;
+        var repository = new Mock<IContactsRepository>();
+        var controller = new ContactsController(repository.Object);
+
+        repository.Setup(x => x.CreateSkill(userId, skill))
+            .ReturnsAsync(skillId)
+            .Verifiable(Times.Once);
+
+        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+        var createdResult = result as CreatedAtActionResult;
+
+        repository.Verify();
+        Assert.That(createdResult, Is.Not.Null);
+        Assert.That(createdResult.ActionName, Is.EqualTo(nameof(ContactsController.Get)));
+        Assert.That(createdResult.RouteValues["id"], Is.EqualTo(userId));
+        Assert.That(createdResult.Value, Is.SameAs(skill));
+    }
+
+    [Test]
+    public async Task AddSkillChecksModelValidation()
+    {
+        int userId = 1;
+        SkillDtoIn skill = SkillsData.InvalidSkill;
+        var repository = new Mock<IContactsRepository>();
+        var controller = new ContactsController(repository.Object);
+
+        controller.ModelState.AddModelError("error", "Something is wrong with the input");
+        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+
+        Assert.That(result, Is.TypeOf<BadRequestResult>());
+    }
+
+    [Test]
+    public async Task AddSkillsForInvalidUserReturnsNotFound()
+    {
+        int userId = 1;
+        SkillDtoIn skill = SkillsData.Skill1;
+        var repository = new Mock<IContactsRepository>();
+        var controller = new ContactsController(repository.Object);
+
+        repository.Setup(x => x.CreateSkill(userId, skill))
+            .ReturnsAsync(-1)
+            .Verifiable(Times.Once);
+
+        var result = await controller.PostSkill(userId, skill).ConfigureAwait(false);
+
+        Assert.That(result, Is.InstanceOf<NotFoundResult>());
+    }
+
+    [Test]
+    public async Task DeleteSkillUpdatesContact()
+    {
+        int userId = 1;
+        int skillId = 5;
+        var repository = new Mock<IContactsRepository>();
+        var controller = new ContactsController(repository.Object);
+
+        repository.Setup(x => x.DeleteSkill(userId, skillId))
+            .ReturnsAsync(true)
+            .Verifiable(Times.Once);
+
+        var result = await controller.DeleteSkill(userId, skillId).ConfigureAwait(false);
+
+        repository.Verify();
+        Assert.That(result, Is.InstanceOf<NoContentResult>());
+    }
+
+    [Test]
+    public async Task DeleteSkillForInvalidUserOrSkillReturnsNotFound()
+    {
+        int userId = 1;
+        int skillId = 5;
+        var repository = new Mock<IContactsRepository>();
+        var controller = new ContactsController(repository.Object);
+
+        repository.Setup(x => x.DeleteSkill(userId, skillId))
+            .ReturnsAsync(false)
+            .Verifiable(Times.Once);
+
+        var result = await controller.DeleteSkill(userId, skillId).ConfigureAwait(false);
+
+        repository.Verify();
         Assert.That(result, Is.InstanceOf<NotFoundResult>());
     }
 }

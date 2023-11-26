@@ -28,7 +28,7 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesDefaultResponseType]
-    public async Task<ActionResult<ContactDtoIn>> Post([FromBody] ContactDtoIn value)
+    public async Task<ActionResult> Post([FromBody] ContactDtoIn value)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -73,14 +73,18 @@ public class ContactsController(IContactsRepository contactsRepo) : ControllerBa
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesDefaultResponseType]
-    public async Task<IActionResult> PostSkill(int userId, [FromBody] SkillDtoIn value)
+    public async Task<ActionResult> PostSkill(int userId, [FromBody] SkillDtoIn value)
     {
+        if (!ModelState.IsValid) {
+            return BadRequest();
+        }
+
         int result = await contactsRepo.CreateSkill(userId, value);
         if (result < 0) {
             return NotFound();
         }
 
-        return CreatedAtAction(nameof(Get), new { id = result }, value);
+        return CreatedAtAction(nameof(Get), new { id = userId }, value);
     }
 
     // DELETE api/<ContactsController>/5/skills/1
