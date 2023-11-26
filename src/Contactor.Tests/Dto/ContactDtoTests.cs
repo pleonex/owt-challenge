@@ -44,7 +44,7 @@ public class ContactDtoTests
             MobilePhone = string.Empty,
         };
 
-        var errors = ValidateModel(invalidContact);
+        var errors = SimpleModelValidator.ValidateModel(invalidContact);
         var errorPropertyNames = errors.SelectMany(x => x.MemberNames);
 
         Assert.That(errors, Has.Count.EqualTo(5));
@@ -62,7 +62,7 @@ public class ContactDtoTests
             Email = "benito-pm.me",
         };
 
-        var errors = ValidateModel(invalidContact);
+        var errors = SimpleModelValidator.ValidateModel(invalidContact);
         var errorPropertyNames = errors.SelectMany(x => x.MemberNames);
 
         Assert.That(errors, Has.Count.EqualTo(1));
@@ -76,18 +76,10 @@ public class ContactDtoTests
             MobilePhone = "a4177888102030b",
         };
 
-        var errors = ValidateModel(invalidContact);
+        var errors = SimpleModelValidator.ValidateModel(invalidContact);
         var errorPropertyNames = errors.SelectMany(x => x.MemberNames);
 
         Assert.That(errors, Has.Count.EqualTo(1));
         Assert.That(errorPropertyNames, Has.One.EqualTo(nameof(ContactDtoIn.MobilePhone)));
-    }
-
-    private List<ValidationResult> ValidateModel(object model)
-    {
-        var validationResults = new List<ValidationResult>();
-        var ctx = new ValidationContext(model, null, null);
-        Validator.TryValidateObject(model, ctx, validationResults, true);
-        return validationResults;
     }
 }
