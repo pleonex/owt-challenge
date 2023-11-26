@@ -18,7 +18,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.GetAll())
+        repository.Setup(x => x.GetAllAsync())
             .ReturnsAsync(expected)
             .Verifiable(Times.Once);
 
@@ -37,7 +37,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.GetById(id))
+        repository.Setup(x => x.GetByIdAsync(id))
             .ReturnsAsync(expected);
 
         var result = await controller.GetContactById(id).ConfigureAwait(false);
@@ -52,7 +52,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.GetById(id))
+        repository.Setup(x => x.GetByIdAsync(id))
             .ReturnsAsync((ContactDtoOut)null);
 
         var result = await controller.GetContactById(id).ConfigureAwait(false);
@@ -69,7 +69,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.Create(contact))
+        repository.Setup(x => x.CreateAsync(contact))
             .ReturnsAsync(id)
             .Verifiable(Times.Once);
 
@@ -86,7 +86,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.Create(contact))
+        repository.Setup(x => x.CreateAsync(contact))
             .ReturnsAsync(id);
 
         var result = await controller.CreateNewContact(contact).ConfigureAwait(false);
@@ -120,7 +120,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(id, contact))
+        repository.Setup(x => x.UpdateByIdAsync(id, contact))
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
@@ -138,7 +138,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(id, contact))
+        repository.Setup(x => x.UpdateByIdAsync(id, contact))
             .Verifiable(Times.Never);
 
         controller.ModelState.AddModelError(nameof(ContactDtoIn.FirstName), "Invalid name");
@@ -156,7 +156,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.UpdateById(id, contact))
+        repository.Setup(x => x.UpdateByIdAsync(id, contact))
             .ReturnsAsync(false);
 
         var result = await controller.UpdateContactById(id, contact).ConfigureAwait(false);
@@ -171,7 +171,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.RemoveById(id))
+        repository.Setup(x => x.RemoveByIdAsync(id))
             .ReturnsAsync(true);
 
         var result = await controller.DeleteContactById(id).ConfigureAwait(false);
@@ -187,7 +187,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.RemoveById(id))
+        repository.Setup(x => x.RemoveByIdAsync(id))
             .ReturnsAsync(false);
 
         var result = await controller.DeleteContactById(id).ConfigureAwait(false);
@@ -204,7 +204,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.CreateSkill(userId, skill))
+        repository.Setup(x => x.CreateSkillAsync(userId, skill))
             .ReturnsAsync(skillId)
             .Verifiable(Times.Once);
 
@@ -240,7 +240,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.CreateSkill(userId, skill))
+        repository.Setup(x => x.CreateSkillAsync(userId, skill))
             .ReturnsAsync(-1)
             .Verifiable(Times.Once);
 
@@ -257,7 +257,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.DeleteSkill(userId, skillId))
+        repository.Setup(x => x.DeleteSkillAsync(userId, skillId))
             .ReturnsAsync(true)
             .Verifiable(Times.Once);
 
@@ -275,7 +275,7 @@ public class ContactsControllerTests
         var repository = new Mock<IContactsRepository>();
         var controller = new ContactsController(repository.Object);
 
-        repository.Setup(x => x.DeleteSkill(userId, skillId))
+        repository.Setup(x => x.DeleteSkillAsync(userId, skillId))
             .ReturnsAsync(false)
             .Verifiable(Times.Once);
 

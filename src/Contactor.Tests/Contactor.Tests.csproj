@@ -9,11 +9,15 @@
     <ProjectReference Include="..\Contactor.Backend\Contactor.Backend.csproj" />
     <ProjectReference Include="..\Contactor.Models.Business\Contactor.Models.Business.csproj" />
     <ProjectReference Include="..\Contactor.Models.Domain\Contactor.Models.Domain.csproj" />
+    <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Moq" />
 
     <PackageReference Include="nunit" />
     <PackageReference Include="NUnit3TestAdapter" />
-    <PackageReference Include="NUnit.Analyzers" />
+    <PackageReference Include="NUnit.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="coverlet.collector" />
   </ItemGroup>

@@ -11,4 +11,4 @@ build/temp/
 *.csproj.user
 
 # Tests
-contacts.db*
+*.db*

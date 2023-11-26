@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 public class ContactsRepository(ContactsDbContext dbContext) : IContactsRepository
 {
-    public async Task<int> Create(ContactDtoIn dto)
+    public async Task<int> CreateAsync(ContactDtoIn dto)
     {
         ArgumentNullException.ThrowIfNull(dto);
 
@@ -21,7 +21,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return newModel.Id;
     }
 
-    public async Task<ContactDtoOut?> GetById(int id)
+    public async Task<ContactDtoOut?> GetByIdAsync(int id)
     {
         Contact? contact = await dbContext.Contacts
             .Include(c => c.Skills)
@@ -32,7 +32,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return contact is null ? null : ContactDtoOut.FromModel(contact);
     }
 
-    public async Task<IEnumerable<ContactDtoOut>> GetAll()
+    public async Task<IEnumerable<ContactDtoOut>> GetAllAsync()
     {
         // We don't include the skills to reduce the output as we don't have requirements
         // Needs to be queried by ID.
@@ -42,7 +42,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return list.Select(ContactDtoOut.FromModel);
     }
 
-    public async Task<bool> RemoveById(int id)
+    public async Task<bool> RemoveByIdAsync(int id)
     {
         Contact? contact = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
         if (contact is null) {
@@ -55,7 +55,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return true;
     }
 
-    public async Task<bool> UpdateById(int id, ContactDtoIn dto)
+    public async Task<bool> UpdateByIdAsync(int id, ContactDtoIn dto)
     {
         Contact? model = await dbContext.Contacts.FindAsync(id).ConfigureAwait(false);
         if (model is null) {
@@ -70,7 +70,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return true;
     }
 
-    public async Task<int> CreateSkill(int userId, SkillDtoIn skill)
+    public async Task<int> CreateSkillAsync(int userId, SkillDtoIn skill)
     {
         Contact? contact = await dbContext.Contacts
             .Include(c => c.Skills)
@@ -95,7 +95,7 @@ public class ContactsRepository(ContactsDbContext dbContext) : IContactsReposito
         return contact.Id;
     }
 
-    public async Task<bool> DeleteSkill(int userId, int skillId)
+    public async Task<bool> DeleteSkillAsync(int userId, int skillId)
     {
         Contact? contact = await dbContext.Contacts
             .Include(c => c.Skills)
